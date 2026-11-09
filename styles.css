@@ -236,3 +236,5 @@ button:disabled { opacity: .6; cursor: wait; }
 /* Hide gated lesson content until the login check finishes (shows anyway after 4s) */
 @keyframes gb-reveal { to { visibility: visible; } }
 .gb-checking .lesson-layout { visibility: hidden; animation: gb-reveal 0s 4s forwards; }
+#questions fieldset + fieldset { margin-top: 28px; }
+#questions legend { font-size: 18px; }

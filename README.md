@@ -39,3 +39,8 @@ These are linked, not copied. They belong to their authors.
 - `account.html` handles sign up, log in, password reset and log out.
 - Lesson 1 is a free preview. Lessons 2–6 and the final page ask for a free account once Supabase is connected.
 - Until the config is filled in, the site works without accounts and saves progress on the device.
+
+## Final exam
+
+- `exam.sql` creates the exam tables, the 20 questions, and two server functions: `get_exam` (questions without answers) and `submit_exam` (grades on the server, 80% to pass, 15-minute wait after a failed try). Run it once in Supabase → SQL Editor. Re-running it replaces the questions.
+- `exam.html` is the exam page. Students must finish all 6 lessons first.
