@@ -31,3 +31,11 @@ These are linked, not copied. They belong to their authors.
 
 - Fill in `[Signature]` and `[Founder Name]` on the certificate.
 - Move certificate records and exam answers to a database (for example Supabase). Right now they are sample data inside the page.
+
+## Student accounts (Supabase)
+
+- `supabase-config.js` holds the Project URL and **publishable** key (safe to be public). Never put the secret key here.
+- `setup.sql` creates the `lesson_progress` table with Row Level Security. Run it once in Supabase → SQL Editor.
+- `account.html` handles sign up, log in, password reset and log out.
+- Lesson 1 is a free preview. Lessons 2–6 and the final page ask for a free account once Supabase is connected.
+- Until the config is filled in, the site works without accounts and saves progress on the device.

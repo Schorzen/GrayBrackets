@@ -23,6 +23,7 @@
         <a href="#courses">Courses</a>
         <a href="#certificates">Certificates</a>
         <a href="verify.html">Verify</a>
+        <a data-auth-link href="account.html">Log in</a>
         <a class="btn btn-dark btn-small" href="lesson-1.html">Start learning free</a>
       </nav>
     </div>
@@ -179,5 +180,8 @@
     </div>
   </footer>
   <script>document.querySelectorAll('.year').forEach(e => e.textContent = new Date().getFullYear());</script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
 </body>
 </html>

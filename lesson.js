@@ -30,6 +30,37 @@
   }
   renderProgress();
 
+  // --- Account sync: merge this browser's progress with the student's account ---
+  const COURSE = 'html-css';
+  let account = null; // { client, user } when logged in
+  if (window.gbAuth) {
+    window.gbAuth.ready.then(async ({ client, user }) => {
+      if (!client || !user) return;
+      account = { client, user };
+      try {
+        const { data, error } = await client.from('lesson_progress').select('lesson').eq('course', COURSE);
+        if (error) throw error;
+        const remote = new Set((data || []).map(r => r.lesson));
+        const local = loadDone();
+        const missing = [...local].filter(n => !remote.has(n));
+        if (missing.length) {
+          await client.from('lesson_progress').upsert(missing.map(n => ({ course: COURSE, lesson: n })), { onConflict: 'user_id,course,lesson', ignoreDuplicates: true });
+        }
+        remote.forEach(n => local.add(n));
+        saveDone(local);
+        renderProgress();
+      } catch (e) {
+        console.warn('Could not sync progress', e);
+      }
+    });
+  }
+  async function saveToAccount(n) {
+    if (!account) return;
+    try {
+      await account.client.from('lesson_progress').upsert({ course: COURSE, lesson: n }, { onConflict: 'user_id,course,lesson', ignoreDuplicates: true });
+    } catch (e) { console.warn('Could not save progress', e); }
+  }
+
   // --- Code editor ---
   const editor = document.getElementById('code-editor');
   const preview = document.getElementById('preview');
@@ -77,7 +108,7 @@
       const summary = document.getElementById('quiz-summary');
       summary.hidden = false;
       if (correct === sets.length) {
-        const done = loadDone(); done.add(lesson); saveDone(done); renderProgress();
+        const done = loadDone(); done.add(lesson); saveDone(done); renderProgress(); saveToAccount(lesson);
         summary.className = 'feedback ok';
         summary.textContent = lesson < TOTAL
           ? 'Ang galing! Lesson complete. Go on to the next lesson when you are ready.'

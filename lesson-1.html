@@ -9,16 +9,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="logo.svg" type="image/svg+xml">
+  
 </head>
-<body class="lesson-page" data-lesson="1">
+<body class="lesson-page" data-lesson="1" data-requires-login="false">
   <a class="skip" href="#main">Skip to content</a>
   <header class="site-header">
     <div class="wrap">
       <a class="brand" href="index.html"><img src="logo.svg" width="28" height="28" alt=""> GrayBrackets</a>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center">
+      <a data-auth-link href="account.html" style="font-weight:500;font-size:15px;color:var(--ink);padding:12px 4px">Log in</a>
       <div class="progress">
         <span>Course progress</span>
         <div class="progress-bar" role="progressbar" aria-label="Course progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><span id="progress-fill" style="width:0%"></span></div>
         <strong id="progress-text" style="color:var(--ink)">0%</strong>
+      </div>
       </div>
     </div>
   </header>
@@ -117,6 +121,9 @@
       <nav aria-label="Footer"><a href="index.html">Home</a><a href="verify.html">Verify</a></nav>
     </div>
   </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
   <script src="lesson.js"></script>
 </body>
 </html>

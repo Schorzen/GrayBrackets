@@ -219,3 +219,20 @@ input[type="text"]:focus { outline: 3px solid var(--accent-light); outline-offse
 .lesson-nav .mark-flag::before { content: "★"; color: var(--accent); }
 #quiz fieldset + fieldset { margin-top: 24px; }
 #quiz legend { font-size: 18px; }
+
+/* Accounts */
+.tabs { display: flex; gap: 4px; background: var(--chip); padding: 4px; border-radius: 12px; margin-bottom: 8px; }
+.tabs button { flex: 1; min-height: 44px; border: 0; border-radius: 9px; background: transparent; font: 600 15px var(--body); color: var(--muted); cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--paper); color: var(--ink); box-shadow: 0 1px 2px rgba(18,33,58,.12); }
+.auth-form { display: flex; flex-direction: column; gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-weight: 600; font-size: 15px; }
+.field .hint { font-size: 13px; color: var(--muted); }
+input[type="email"], input[type="password"] { min-height: 48px; padding: 0 14px; border: 1px solid #8A8577; border-radius: 10px; font: 16px var(--body); background: #fff; color: var(--ink); width: 100%; }
+input[type="email"]:focus, input[type="password"]:focus { outline: 3px solid var(--accent-light); outline-offset: 1px; }
+.link-button { background: none; border: 0; padding: 10px 0; min-height: 44px; color: var(--link); font: 500 15px var(--body); text-decoration: underline; cursor: pointer; align-self: flex-start; }
+button:disabled { opacity: .6; cursor: wait; }
+
+/* Hide gated lesson content until the login check finishes (shows anyway after 4s) */
+@keyframes gb-reveal { to { visibility: visible; } }
+.gb-checking .lesson-layout { visibility: hidden; animation: gb-reveal 0s 4s forwards; }

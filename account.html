@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Account · GrayBrackets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+</head>
+<body style="background:var(--sand)">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="logo.svg" width="32" height="32" alt=""> GrayBrackets</a>
+      <nav class="nav" aria-label="Main">
+        <a href="index.html#courses">Courses</a>
+        <a href="verify.html">Verify</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap" style="padding-top:40px;padding-bottom:64px;max-width:520px">
+    <p id="message" class="feedback" role="status" hidden style="margin-bottom:16px"></p>
+
+    <!-- Accounts not switched on yet -->
+    <section id="view-off" class="panel" hidden>
+      <h1 style="font-size:30px">Accounts are coming soon</h1>
+      <p>You can still use every free lesson. Your progress is saved on this device for now.</p>
+      <a class="btn btn-dark" href="lesson-1.html">Start learning</a>
+    </section>
+
+    <!-- Sign up / log in -->
+    <section id="view-auth" hidden>
+      <div class="panel">
+        <div class="tabs" role="tablist" aria-label="Account">
+          <button type="button" role="tab" id="tab-signup" aria-selected="true" aria-controls="form-signup">Create account</button>
+          <button type="button" role="tab" id="tab-login" aria-selected="false" aria-controls="form-login">Log in</button>
+        </div>
+
+        <form id="form-signup" class="auth-form" role="tabpanel" aria-labelledby="tab-signup">
+          <h1 style="font-size:28px">Create your free account</h1>
+          <p class="muted" style="font-size:15px">Save your progress on any device and earn certificates in your name.</p>
+          <div class="field">
+            <label for="su-name">Full name</label>
+            <input id="su-name" type="text" autocomplete="name" required maxlength="80">
+            <span class="hint">This exact name goes on your certificates.</span>
+          </div>
+          <div class="field">
+            <label for="su-email">Email</label>
+            <input id="su-email" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="su-pass">Password</label>
+            <input id="su-pass" type="password" autocomplete="new-password" minlength="8" required>
+            <span class="hint">At least 8 characters.</span>
+          </div>
+          <button type="submit" class="btn btn-dark">Create account</button>
+        </form>
+
+        <form id="form-login" class="auth-form" role="tabpanel" aria-labelledby="tab-login" hidden>
+          <h1 style="font-size:28px">Welcome back</h1>
+          <div class="field">
+            <label for="li-email">Email</label>
+            <input id="li-email" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="li-pass">Password</label>
+            <input id="li-pass" type="password" autocomplete="current-password" required>
+          </div>
+          <button type="submit" class="btn btn-dark">Log in</button>
+          <button type="button" class="link-button" id="forgot">Forgot your password?</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Set a new password (after a reset email) -->
+    <section id="view-reset" class="panel" hidden>
+      <form id="form-reset" class="auth-form">
+        <h1 style="font-size:28px">Set a new password</h1>
+        <div class="field">
+          <label for="new-pass">New password</label>
+          <input id="new-pass" type="password" autocomplete="new-password" minlength="8" required>
+          <span class="hint">At least 8 characters.</span>
+        </div>
+        <button type="submit" class="btn btn-dark">Save password</button>
+      </form>
+    </section>
+
+    <!-- Logged in -->
+    <section id="view-account" class="panel" hidden>
+      <p class="muted" style="font-size:14px">Your account</p>
+      <h1 id="acct-name" style="font-size:32px"></h1>
+      <p id="acct-email" class="muted"></p>
+      <div style="border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:10px">
+        <p style="font-weight:600">HTML &amp; CSS Foundations</p>
+        <div class="progress" style="color:var(--ink)">
+          <div class="progress-bar" style="width:100%;max-width:280px"><span id="acct-fill" style="width:0%"></span></div>
+          <strong id="acct-pct">0%</strong>
+        </div>
+        <p id="acct-count" class="muted" style="font-size:15px"></p>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn-dark" id="continue" href="lesson-1.html">Continue learning</a>
+        <button type="button" class="btn btn-outline" id="logout">Log out</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>© <span class="year">2026</span> GrayBrackets. All rights reserved.</div>
+      <nav aria-label="Footer"><a href="index.html">Home</a><a href="verify.html">Verify</a></nav>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+  (async function () {
+    const $ = id => document.getElementById(id);
+    const views = ['view-off', 'view-auth', 'view-reset', 'view-account'];
+    const show = v => views.forEach(id => { $(id).hidden = id !== v; });
+    const msg = (text, ok) => { const m = $('message'); m.hidden = !text; m.textContent = text || ''; m.className = 'feedback ' + (ok ? 'ok' : 'bad'); };
+    const busy = (form, on) => form.querySelectorAll('button, input').forEach(el => { el.disabled = on; });
+    const params = new URLSearchParams(location.search);
+    const rawNext = params.get('next') || '';
+    const next = /^[a-z0-9-]+\.html(\?[^#]*)?$/i.test(rawNext) ? rawNext : '';  // only our own pages
+    const here = location.origin + location.pathname;
+    const LOCAL_KEY = 'gb-course01-done';
+
+    const { client, user, configured } = await window.gbAuth.ready;
+    if (!configured || !client) { show('view-off'); return; }
+
+    // Tabs
+    function pickTab(which) {
+      const signup = which === 'signup';
+      $('tab-signup').setAttribute('aria-selected', signup);
+      $('tab-login').setAttribute('aria-selected', !signup);
+      $('form-signup').hidden = !signup;
+      $('form-login').hidden = signup;
+      msg('');
+    }
+    $('tab-signup').addEventListener('click', () => pickTab('signup'));
+    $('tab-login').addEventListener('click', () => pickTab('login'));
+    if (params.get('mode') === 'login' || next) pickTab('login');
+
+    async function showAccount(u) {
+      if (next) { location.replace(next); return; }
+      show('view-account');
+      $('acct-name').textContent = (u.user_metadata && u.user_metadata.full_name) || 'Student';
+      $('acct-email').textContent = u.email;
+      let done = [];
+      try {
+        const { data } = await client.from('lesson_progress').select('lesson').eq('course', 'html-css');
+        done = (data || []).map(r => r.lesson);
+      } catch (e) {}
+      const pct = Math.round(done.length / 6 * 100);
+      $('acct-fill').style.width = pct + '%';
+      $('acct-pct').textContent = pct + '%';
+      $('acct-count').textContent = done.length === 6
+        ? 'All 6 lessons complete. Your next step is the final project.'
+        : `${done.length} of 6 lessons complete.`;
+      const nextLesson = [1, 2, 3, 4, 5, 6].find(n => !done.includes(n));
+      $('continue').href = nextLesson ? `lesson-${nextLesson}.html` : 'final.html';
+    }
+
+    client.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') { show('view-reset'); msg(''); }
+    });
+
+    if (location.hash.includes('type=recovery')) show('view-reset');
+    else if (user) showAccount(user);
+    else show('view-auth');
+
+    if (location.hash.includes('error_description')) {
+      const h = new URLSearchParams(location.hash.slice(1));
+      msg(h.get('error_description') + '. Please try again.', false);
+    }
+
+    // Sign up
+    $('form-signup').addEventListener('submit', async e => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.reportValidity()) return;
+      busy(form, true); msg('');
+      const { data, error } = await client.auth.signUp({
+        email: $('su-email').value.trim(),
+        password: $('su-pass').value,
+        options: { data: { full_name: $('su-name').value.trim() }, emailRedirectTo: here }
+      });
+      busy(form, false);
+      if (error) { msg(error.message, false); return; }
+      if (data.session) { showAccount(data.user); return; }
+      msg('Almost done! We sent a confirmation link to your email. Open it on this device to finish creating your account.', true);
+      form.reset();
+    });
+
+    // Log in
+    $('form-login').addEventListener('submit', async e => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.reportValidity()) return;
+      busy(form, true); msg('');
+      const { data, error } = await client.auth.signInWithPassword({ email: $('li-email').value.trim(), password: $('li-pass').value });
+      busy(form, false);
+      if (error) { msg(error.message === 'Invalid login credentials' ? 'Wrong email or password. Please try again.' : error.message, false); return; }
+      showAccount(data.user);
+    });
+
+    // Forgot password
+    $('forgot').addEventListener('click', async () => {
+      const email = $('li-email').value.trim();
+      if (!email) { msg('Type your email above first, then tap "Forgot your password?" again.', false); $('li-email').focus(); return; }
+      const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: here });
+      msg(error ? error.message : 'If that email has an account, we sent a link to reset your password.', !error);
+    });
+
+    // New password
+    $('form-reset').addEventListener('submit', async e => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.reportValidity()) return;
+      busy(form, true);
+      const { data, error } = await client.auth.updateUser({ password: $('new-pass').value });
+      busy(form, false);
+      if (error) { msg(error.message, false); return; }
+      history.replaceState(null, '', location.pathname);
+      msg('Password saved.', true);
+      showAccount(data.user);
+    });
+
+    // Log out (also clears this device's saved progress so the next person starts fresh)
+    $('logout').addEventListener('click', async () => {
+      await client.auth.signOut();
+      try { localStorage.removeItem(LOCAL_KEY); } catch (e) {}
+      location.href = 'index.html';
+    });
+  })();
+  document.querySelectorAll('.year').forEach(e => { e.textContent = new Date().getFullYear(); });
+  </script>
+</body>
+</html>
