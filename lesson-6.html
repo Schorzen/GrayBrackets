@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intro to CSS · HTML &amp; CSS Foundations · GrayBrackets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+</head>
+<body class="lesson-page" data-lesson="6">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="logo.svg" width="28" height="28" alt=""> GrayBrackets</a>
+      <div class="progress">
+        <span>Course progress</span>
+        <div class="progress-bar" role="progressbar" aria-label="Course progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><span id="progress-fill" style="width:0%"></span></div>
+        <strong id="progress-text" style="color:var(--ink)">0%</strong>
+      </div>
+    </div>
+  </header>
+  <div class="lesson-layout">
+    <nav class="lesson-nav" aria-label="Course lessons">
+      <div class="muted" style="font-size:13px;padding:4px 10px">Course 01</div>
+      <h2>HTML &amp; CSS Foundations</h2>
+      <ol>
+        <li><a href="lesson-1.html" data-lesson-link="1"><span class="mark" aria-hidden="true"></span>1. What is a website?</a></li>
+        <li><a href="lesson-2.html" data-lesson-link="2"><span class="mark" aria-hidden="true"></span>2. Your first HTML file</a></li>
+        <li><a href="lesson-3.html" data-lesson-link="3"><span class="mark" aria-hidden="true"></span>3. Headings and paragraphs</a></li>
+        <li><a href="lesson-4.html" data-lesson-link="4"><span class="mark" aria-hidden="true"></span>4. Links and images</a></li>
+        <li><a href="lesson-5.html" data-lesson-link="5"><span class="mark" aria-hidden="true"></span>5. Lists and tables</a></li>
+        <li><a href="lesson-6.html" data-lesson-link="6" aria-current="page"><span class="mark" aria-hidden="true"></span>6. Intro to CSS</a></li>
+        <li><a href="final.html"><span class="mark mark-flag" aria-hidden="true"></span>Final exam + project</a></li>
+      </ol>
+    </nav>
+
+    <main id="main" class="lesson-main">
+      <article class="panel">
+        <p class="muted" style="font-size:14px">Lesson 6 of 6 · about 15 minutes</p>
+        <h1>Intro to CSS</h1>
+        <div class="protected lesson-text">
+<p>HTML builds the structure; <strong>CSS</strong> makes it look good. A CSS rule has a <strong>selector</strong> (what to style) and <strong>declarations</strong> (how to style it), each a property and a value.</p>
+<p>For example, <code class="inline-code">h1 { color: navy; }</code> makes every <code class="inline-code">&lt;h1&gt;</code> navy. The selector is <code class="inline-code">h1</code>, the property is <code class="inline-code">color</code>, and the value is <code class="inline-code">navy</code>.</p>
+<p>To style only some elements, give them a <strong>class</strong> in HTML, like <code class="inline-code">&lt;p class=&quot;sale&quot;&gt;</code>, and select it in CSS with a dot: <code class="inline-code">.sale</code>.</p>
+<p>For now you can put CSS inside a <code class="inline-code">&lt;style&gt;</code> tag. In real projects, it usually goes in its own file, like this site's <code class="inline-code">styles.css</code>.</p>
+</div>
+        <pre class="code-block" aria-label="Code example"><code>h1 {
+  color: navy;
+  font-size: 32px;
+}
+
+.sale {
+  background-color: gold;
+  padding: 8px;
+  border-radius: 6px;
+}</code></pre>
+        
+        <div class="tip protected"><strong>Tip:</strong> Subukan mo lang. Change one value at a time and tap Run code. Experimenting is the fastest way to learn CSS.</div>
+      </article>
+
+      <section class="panel" aria-labelledby="try-it">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center">
+          <h2 id="try-it">Try it yourself</h2>
+          <div class="btn-row">
+            <button type="button" class="btn btn-outline btn-small" id="reset-code">Reset</button>
+            <button type="button" class="btn btn-dark btn-small" id="run-code">Run code</button>
+          </div>
+        </div>
+        <p class="muted" style="font-size:15px">Change the colors, make the heading bigger, then give a second paragraph the class &quot;sale&quot;.</p>
+        <div class="editor">
+          <div>
+            <label for="code-editor">Your code</label>
+            <textarea id="code-editor" class="code" spellcheck="false" autocapitalize="off" autocomplete="off">&lt;style&gt;
+  body { font-family: sans-serif; }
+  h1 {
+    color: navy;
+    font-size: 32px;
+  }
+  .sale {
+    background-color: gold;
+    padding: 8px;
+    border-radius: 6px;
+  }
+&lt;/style&gt;
+
+&lt;h1&gt;Aling Nena&#x27;s Store&lt;/h1&gt;
+&lt;p class=&quot;sale&quot;&gt;Sale: 10 pandesal for ₱25!&lt;/p&gt;
+&lt;p&gt;Open every day, 6 AM to 9 PM.&lt;/p&gt;</textarea>
+          </div>
+          <div>
+            <span class="label" id="preview-label">Preview</span>
+            <iframe class="preview" id="preview" title="Preview of your code" sandbox="allow-popups allow-popups-to-escape-sandbox" aria-labelledby="preview-label"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <form class="panel" id="quiz" novalidate>
+        <h2>Quick check</h2>
+        <fieldset data-answer="color" data-ok="Tama! color sets the text color." data-bad="Not quite. background-color is behind the text.">
+          <legend>1. Which property changes the text color?</legend>
+          <label class="choice"><input type="radio" name="q1" value="color"> color</label>
+          <label class="choice"><input type="radio" name="q1" value="bg"> background-color</label>
+          <label class="choice"><input type="radio" name="q1" value="font"> font-size</label>
+          <p class="feedback" role="status" hidden></p>
+        </fieldset>
+        <fieldset data-answer="dot" data-ok="Tama! A dot means class." data-bad="Not quite. Classes use a dot in CSS.">
+          <legend>2. How do you select class=&quot;sale&quot; in CSS?</legend>
+          <label class="choice"><input type="radio" name="q2" value="dot"> .sale</label>
+          <label class="choice"><input type="radio" name="q2" value="hash"> #sale</label>
+          <label class="choice"><input type="radio" name="q2" value="plain"> sale</label>
+          <p class="feedback" role="status" hidden></p>
+        </fieldset>
+        <div><button type="submit" class="btn btn-outline">Check answers</button></div>
+        <p id="quiz-summary" class="feedback" role="status" hidden></p>
+      </form>
+
+      <div class="practice-box">
+        <p><strong>Want to go deeper?</strong> Read the full free guide in this course's Practice book.</p>
+        <a class="btn btn-outline btn-small" href="https://developer.mozilla.org/en-US/docs/Learn_web_development" target="_blank" rel="noopener">Practice: MDN (opens external site)</a>
+      </div>
+
+      <div class="pager">
+        <a class="btn btn-outline" href="lesson-5.html">← Lists and tables</a>
+        <a class="btn btn-accent" href="final.html">Final exam + project →</a>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>© <span class="year">2026</span> GrayBrackets. Lesson text is copyrighted. Code examples are free to copy and practice with.</div>
+      <nav aria-label="Footer"><a href="index.html">Home</a><a href="verify.html">Verify</a></nav>
+    </div>
+  </footer>
+  <script src="lesson.js"></script>
+</body>
+</html>

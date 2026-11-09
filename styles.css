@@ -207,3 +207,15 @@ input[type="text"]:focus { outline: 3px solid var(--accent-light); outline-offse
   .panel { padding: 20px; }
   .card { padding: 22px; }
 }
+
+/* Lesson content */
+.lesson-text { display: flex; flex-direction: column; gap: 14px; font-size: 17px; line-height: 1.7; color: #26324A; }
+.lesson-list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
+.code-block { margin: 0; background: var(--ink); color: #D6DCE6; border-radius: 10px; padding: 16px 18px; overflow-x: auto; font-size: 15px; line-height: 1.7; }
+.code-block code { font-family: "Space Grotesk", ui-monospace, monospace; white-space: pre; }
+.lesson-nav .mark { display: inline-block; width: 18px; text-align: center; flex: none; color: var(--muted); }
+.lesson-nav .is-done .mark { color: var(--ok); font-weight: 700; }
+.lesson-nav a[aria-current="page"] .mark { color: var(--accent); }
+.lesson-nav .mark-flag::before { content: "★"; color: var(--accent); }
+#quiz fieldset + fieldset { margin-top: 24px; }
+#quiz legend { font-size: 18px; }

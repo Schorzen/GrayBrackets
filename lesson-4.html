@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Links and images · HTML &amp; CSS Foundations · GrayBrackets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+</head>
+<body class="lesson-page" data-lesson="4">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="logo.svg" width="28" height="28" alt=""> GrayBrackets</a>
+      <div class="progress">
+        <span>Course progress</span>
+        <div class="progress-bar" role="progressbar" aria-label="Course progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><span id="progress-fill" style="width:0%"></span></div>
+        <strong id="progress-text" style="color:var(--ink)">0%</strong>
+      </div>
+    </div>
+  </header>
+  <div class="lesson-layout">
+    <nav class="lesson-nav" aria-label="Course lessons">
+      <div class="muted" style="font-size:13px;padding:4px 10px">Course 01</div>
+      <h2>HTML &amp; CSS Foundations</h2>
+      <ol>
+        <li><a href="lesson-1.html" data-lesson-link="1"><span class="mark" aria-hidden="true"></span>1. What is a website?</a></li>
+        <li><a href="lesson-2.html" data-lesson-link="2"><span class="mark" aria-hidden="true"></span>2. Your first HTML file</a></li>
+        <li><a href="lesson-3.html" data-lesson-link="3"><span class="mark" aria-hidden="true"></span>3. Headings and paragraphs</a></li>
+        <li><a href="lesson-4.html" data-lesson-link="4" aria-current="page"><span class="mark" aria-hidden="true"></span>4. Links and images</a></li>
+        <li><a href="lesson-5.html" data-lesson-link="5"><span class="mark" aria-hidden="true"></span>5. Lists and tables</a></li>
+        <li><a href="lesson-6.html" data-lesson-link="6"><span class="mark" aria-hidden="true"></span>6. Intro to CSS</a></li>
+        <li><a href="final.html"><span class="mark mark-flag" aria-hidden="true"></span>Final exam + project</a></li>
+      </ol>
+    </nav>
+
+    <main id="main" class="lesson-main">
+      <article class="panel">
+        <p class="muted" style="font-size:14px">Lesson 4 of 6 · about 12 minutes</p>
+        <h1>Links and images</h1>
+        <div class="protected lesson-text">
+<p><strong>Links</strong> are what make the web a "web." They use the <code class="inline-code">&lt;a&gt;</code> tag (short for "anchor"). The <code class="inline-code">href</code> attribute holds the address to go to, and the text between the tags is what people tap.</p>
+<p>An <strong>attribute</strong> is extra information inside an opening tag, written as <code class="inline-code">name=&quot;value&quot;</code>. Adding <code class="inline-code">target=&quot;_blank&quot;</code> opens the link in a new tab.</p>
+<p><strong>Images</strong> use <code class="inline-code">&lt;img&gt;</code>. It has no closing tag. The <code class="inline-code">src</code> attribute is the image file, and <code class="inline-code">alt</code> is a short text description.</p>
+<p>Always write good <code class="inline-code">alt</code> text. People who use screen readers hear it, and it shows up if the image fails to load on a slow connection.</p>
+</div>
+        <pre class="code-block" aria-label="Code example"><code>&lt;a href=&quot;https://www.wikipedia.org&quot;&gt;Visit Wikipedia&lt;/a&gt;
+
+&lt;img src=&quot;logo.svg&quot; alt=&quot;GrayBrackets logo&quot; width=&quot;80&quot;&gt;</code></pre>
+        
+        <div class="tip protected"><strong>Tip:</strong> Ilarawan ang larawan. Good alt text says what the picture shows, like &quot;Jeepney parked in front of the store,&quot; not just &quot;image.&quot;</div>
+      </article>
+
+      <section class="panel" aria-labelledby="try-it">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center">
+          <h2 id="try-it">Try it yourself</h2>
+          <div class="btn-row">
+            <button type="button" class="btn btn-outline btn-small" id="reset-code">Reset</button>
+            <button type="button" class="btn btn-dark btn-small" id="run-code">Run code</button>
+          </div>
+        </div>
+        <p class="muted" style="font-size:15px">Change the link text, then change the image&#x27;s alt text to describe it better. Tap Run code and try the link in the preview.</p>
+        <div class="editor">
+          <div>
+            <label for="code-editor">Your code</label>
+            <textarea id="code-editor" class="code" spellcheck="false" autocapitalize="off" autocomplete="off">&lt;h1&gt;My favorite sites&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.wikipedia.org&quot; target=&quot;_blank&quot;&gt;Visit Wikipedia&lt;/a&gt;&lt;/p&gt;
+
+&lt;img src=&quot;logo.svg&quot; alt=&quot;GrayBrackets logo&quot; width=&quot;80&quot;&gt;</textarea>
+          </div>
+          <div>
+            <span class="label" id="preview-label">Preview</span>
+            <iframe class="preview" id="preview" title="Preview of your code" sandbox="allow-popups allow-popups-to-escape-sandbox" aria-labelledby="preview-label"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <form class="panel" id="quiz" novalidate>
+        <h2>Quick check</h2>
+        <fieldset data-answer="href" data-ok="Tama! href holds the address." data-bad="Not quite. src is for images, alt is for descriptions.">
+          <legend>1. Which attribute holds a link&#x27;s address?</legend>
+          <label class="choice"><input type="radio" name="q1" value="href"> href</label>
+          <label class="choice"><input type="radio" name="q1" value="src"> src</label>
+          <label class="choice"><input type="radio" name="q1" value="alt"> alt</label>
+          <p class="feedback" role="status" hidden></p>
+        </fieldset>
+        <fieldset data-answer="desc" data-ok="Tama! alt describes the image for screen readers and slow connections." data-bad="Not quite. alt is a text description.">
+          <legend>2. What is the alt attribute for?</legend>
+          <label class="choice"><input type="radio" name="q2" value="size"> Setting the image size</label>
+          <label class="choice"><input type="radio" name="q2" value="desc"> Describing the image in words</label>
+          <label class="choice"><input type="radio" name="q2" value="link"> Linking to another page</label>
+          <p class="feedback" role="status" hidden></p>
+        </fieldset>
+        <div><button type="submit" class="btn btn-outline">Check answers</button></div>
+        <p id="quiz-summary" class="feedback" role="status" hidden></p>
+      </form>
+
+      <div class="practice-box">
+        <p><strong>Want to go deeper?</strong> Read the full free guide in this course's Practice book.</p>
+        <a class="btn btn-outline btn-small" href="https://developer.mozilla.org/en-US/docs/Learn_web_development" target="_blank" rel="noopener">Practice: MDN (opens external site)</a>
+      </div>
+
+      <div class="pager">
+        <a class="btn btn-outline" href="lesson-3.html">← Headings and paragraphs</a>
+        <a class="btn btn-accent" href="lesson-5.html">Lists and tables →</a>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>© <span class="year">2026</span> GrayBrackets. Lesson text is copyrighted. Code examples are free to copy and practice with.</div>
+      <nav aria-label="Footer"><a href="index.html">Home</a><a href="verify.html">Verify</a></nav>
+    </div>
+  </footer>
+  <script src="lesson.js"></script>
+</body>
+</html>

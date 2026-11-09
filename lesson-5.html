@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lists and tables · HTML &amp; CSS Foundations · GrayBrackets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+</head>
+<body class="lesson-page" data-lesson="5">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="logo.svg" width="28" height="28" alt=""> GrayBrackets</a>
+      <div class="progress">
+        <span>Course progress</span>
+        <div class="progress-bar" role="progressbar" aria-label="Course progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><span id="progress-fill" style="width:0%"></span></div>
+        <strong id="progress-text" style="color:var(--ink)">0%</strong>
+      </div>
+    </div>
+  </header>
+  <div class="lesson-layout">
+    <nav class="lesson-nav" aria-label="Course lessons">
+      <div class="muted" style="font-size:13px;padding:4px 10px">Course 01</div>
+      <h2>HTML &amp; CSS Foundations</h2>
+      <ol>
+        <li><a href="lesson-1.html" data-lesson-link="1"><span class="mark" aria-hidden="true"></span>1. What is a website?</a></li>
+        <li><a href="lesson-2.html" data-lesson-link="2"><span class="mark" aria-hidden="true"></span>2. Your first HTML file</a></li>
+        <li><a href="lesson-3.html" data-lesson-link="3"><span class="mark" aria-hidden="true"></span>3. Headings and paragraphs</a></li>
+        <li><a href="lesson-4.html" data-lesson-link="4"><span class="mark" aria-hidden="true"></span>4. Links and images</a></li>
+        <li><a href="lesson-5.html" data-lesson-link="5" aria-current="page"><span class="mark" aria-hidden="true"></span>5. Lists and tables</a></li>
+        <li><a href="lesson-6.html" data-lesson-link="6"><span class="mark" aria-hidden="true"></span>6. Intro to CSS</a></li>
+        <li><a href="final.html"><span class="mark mark-flag" aria-hidden="true"></span>Final exam + project</a></li>
+      </ol>
+    </nav>
+
+    <main id="main" class="lesson-main">
+      <article class="panel">
+        <p class="muted" style="font-size:14px">Lesson 5 of 6 · about 12 minutes</p>
+        <h1>Lists and tables</h1>
+        <div class="protected lesson-text">
+<p><strong>Lists</strong> group related items. Use <code class="inline-code">&lt;ul&gt;</code> (unordered list) for bullet points where the order doesn't matter, and <code class="inline-code">&lt;ol&gt;</code> (ordered list) for numbered steps. Each item goes inside <code class="inline-code">&lt;li&gt;</code>.</p>
+<p><strong>Tables</strong> show data in rows and columns, like a price list. A table is built from <code class="inline-code">&lt;table&gt;</code>, rows with <code class="inline-code">&lt;tr&gt;</code>, header cells with <code class="inline-code">&lt;th&gt;</code>, and regular cells with <code class="inline-code">&lt;td&gt;</code>.</p>
+<p>Use tables only for real data. For page layout (putting things side by side), you'll use CSS instead.</p>
+</div>
+        <pre class="code-block" aria-label="Code example"><code>&lt;h2&gt;Shopping list&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Rice&lt;/li&gt;
+  &lt;li&gt;Eggs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Price list&lt;/h2&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th&gt;Item&lt;/th&gt;&lt;th&gt;Price&lt;/th&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;Pandesal&lt;/td&gt;&lt;td&gt;₱3&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;Coffee&lt;/td&gt;&lt;td&gt;₱15&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</code></pre>
+        
+        <div class="tip protected"><strong>Tip:</strong> Listahan para sa listahan, table para sa data. A shopping list is a list; a price list with columns is a table.</div>
+      </article>
+
+      <section class="panel" aria-labelledby="try-it">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center">
+          <h2 id="try-it">Try it yourself</h2>
+          <div class="btn-row">
+            <button type="button" class="btn btn-outline btn-small" id="reset-code">Reset</button>
+            <button type="button" class="btn btn-dark btn-small" id="run-code">Run code</button>
+          </div>
+        </div>
+        <p class="muted" style="font-size:15px">Add a third item to the shopping list, then add a new row to the price table for something your store sells.</p>
+        <div class="editor">
+          <div>
+            <label for="code-editor">Your code</label>
+            <textarea id="code-editor" class="code" spellcheck="false" autocapitalize="off" autocomplete="off">&lt;h2&gt;Shopping list&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Rice&lt;/li&gt;
+  &lt;li&gt;Eggs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Price list&lt;/h2&gt;
+&lt;table border=&quot;1&quot;&gt;
+  &lt;tr&gt;&lt;th&gt;Item&lt;/th&gt;&lt;th&gt;Price&lt;/th&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;Pandesal&lt;/td&gt;&lt;td&gt;₱3&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;Coffee&lt;/td&gt;&lt;td&gt;₱15&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</textarea>
+          </div>
+          <div>
+            <span class="label" id="preview-label">Preview</span>
+            <iframe class="preview" id="preview" title="Preview of your code" sandbox="allow-popups allow-popups-to-escape-sandbox" aria-labelledby="preview-label"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <form class="panel" id="quiz" novalidate>
+        <h2>Quick check</h2>
+        <fieldset data-answer="ol" data-ok="Tama! &lt;ol&gt; means ordered, so it&#x27;s numbered." data-bad="Not quite. Numbered means ordered.">
+          <legend>1. Which tag makes a numbered list?</legend>
+          <label class="choice"><input type="radio" name="q1" value="ul"> &lt;ul&gt;</label>
+          <label class="choice"><input type="radio" name="q1" value="ol"> &lt;ol&gt;</label>
+          <label class="choice"><input type="radio" name="q1" value="li"> &lt;li&gt;</label>
+          <p class="feedback" role="status" hidden></p>
+        </fieldset>
+        <fieldset data-answer="tr" data-ok="Tama! tr means table row." data-bad="Not quite. td and th are cells inside a row.">
+          <legend>2. Which tag makes one row in a table?</legend>
+          <label class="choice"><input type="radio" name="q2" value="tr"> &lt;tr&gt;</label>
+          <label class="choice"><input type="radio" name="q2" value="td"> &lt;td&gt;</label>
+          <label class="choice"><input type="radio" name="q2" value="th"> &lt;th&gt;</label>
+          <p class="feedback" role="status" hidden></p>
+        </fieldset>
+        <div><button type="submit" class="btn btn-outline">Check answers</button></div>
+        <p id="quiz-summary" class="feedback" role="status" hidden></p>
+      </form>
+
+      <div class="practice-box">
+        <p><strong>Want to go deeper?</strong> Read the full free guide in this course's Practice book.</p>
+        <a class="btn btn-outline btn-small" href="https://developer.mozilla.org/en-US/docs/Learn_web_development" target="_blank" rel="noopener">Practice: MDN (opens external site)</a>
+      </div>
+
+      <div class="pager">
+        <a class="btn btn-outline" href="lesson-4.html">← Links and images</a>
+        <a class="btn btn-accent" href="lesson-6.html">Intro to CSS →</a>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>© <span class="year">2026</span> GrayBrackets. Lesson text is copyrighted. Code examples are free to copy and practice with.</div>
+      <nav aria-label="Footer"><a href="index.html">Home</a><a href="verify.html">Verify</a></nav>
+    </div>
+  </footer>
+  <script src="lesson.js"></script>
+</body>
+</html>
