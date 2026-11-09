@@ -50,6 +50,7 @@ code, pre, textarea.code { font-family: "Space Grotesk", ui-monospace, monospace
 .nav { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; font-size: 15px; font-weight: 500; }
 .nav a { color: var(--ink); text-decoration: none; padding: 12px; border-radius: 8px; }
 .nav a:hover { background: var(--chip); }
+.nav a.btn-dark, .nav a.btn-dark:hover { color: var(--paper); background: var(--ink); padding: 0 16px; }
 
 /* Buttons */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 22px; border-radius: 10px; font: 600 16px var(--body); text-decoration: none; cursor: pointer; border: 1px solid transparent; }
@@ -199,7 +200,9 @@ input[type="text"]:focus { outline: 3px solid var(--accent-light); outline-offse
 }
 
 @media (max-width: 600px) {
-  .hero { padding: 48px 0 40px; }
+  .nav a.btn { display: none; } /* the page itself has a big start button */
+  .nav { margin-left: -12px; }
+  .hero { padding: 40px 0 40px; }
   .section { padding: 52px 0; }
   .panel { padding: 20px; }
   .card { padding: 22px; }
