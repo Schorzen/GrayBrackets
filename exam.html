@@ -65,7 +65,7 @@
       cooldown: 'Please wait 15 minutes after a try before taking the exam again. Use the time to review the lessons.',
       not_logged_in: 'Please log in again to take the exam.'
     };
-    const explain = e => ERRORS[(e && e.message || '').trim()] || 'Something went wrong. Check your connection and try again.';
+    const explain = e => ERRORS[(e && e.message || '').trim()] || ('Something went wrong. Details: ' + ((e && (e.message || e.code)) || 'no connection') + (e && e.hint ? ' (' + e.hint + ')' : ''));
 
     const { client, user, configured } = await window.gbAuth.ready;
     if (!configured || !client || !user) { $('status-text').textContent = 'Log in to take the exam.'; return; }

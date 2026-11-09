@@ -68,7 +68,7 @@
     btn.disabled = false;
     if (error) {
       msg.hidden = false; msg.className = 'feedback bad';
-      msg.textContent = ERRORS[(error.message || '').trim()] || 'Something went wrong. Check your connection and try again.';
+      msg.textContent = ERRORS[(error.message || '').trim()] || ('Something went wrong. Details: ' + (error.message || error.code || 'no connection'));
       return;
     }
     msg.hidden = true;
