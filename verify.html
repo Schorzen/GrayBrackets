@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verify a Certificate · GrayBrackets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+</head>
+<body style="background:var(--sand)">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="logo.svg" width="32" height="32" alt=""> GrayBrackets</a>
+      <nav class="nav" aria-label="Main">
+        <a href="index.html#courses">Courses</a>
+        <a href="verify.html" aria-current="page">Verify</a>
+        <a class="btn btn-dark btn-small" href="lesson.html">Start learning free</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap" style="padding-top:44px;padding-bottom:64px;display:flex;flex-direction:column;gap:24px">
+    <div>
+      <p class="muted" style="font-size:14px">Certificate verification</p>
+      <h1 id="result-title" style="font-size:clamp(30px,5vw,40px)">Check a certificate</h1>
+    </div>
+
+    <div class="verify-layout">
+      <div class="verify-main">
+        <div id="result" aria-live="polite"></div>
+      </div>
+
+      <aside class="verify-side">
+        <form class="panel" id="verify-form">
+          <label for="cert-id" style="font-weight:600">Enter a certificate ID</label>
+          <input id="cert-id" type="text" placeholder="e.g. GB-FE-2026-7Q4K9" autocapitalize="characters" autocomplete="off">
+          <button type="submit" class="btn btn-dark">Check certificate</button>
+          <p class="muted" style="font-size:14px">Try the sample ID: <code>GB-FE-2026-7Q4K9</code></p>
+        </form>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>© <span class="year">2026</span> GrayBrackets. All rights reserved.</div>
+      <nav aria-label="Footer"><a href="index.html">Home</a><a href="certificate.html">Sample certificate</a></nav>
+    </div>
+  </footer>
+
+  <script>
+    // Sample record. In the real site, certificates come from a database (e.g. Supabase),
+    // so nobody can add fake ones by editing this page.
+    const CERTS = {
+      'GB-FE-2026-7Q4K9': {
+        name: 'Juan Dela Cruz',
+        course: 'Front-End Web Development',
+        issued: 'November 9, 2026',
+        score: '92%',
+        skills: ['Semantic HTML', 'Responsive CSS', 'Flexbox & Grid', 'JavaScript DOM', 'Accessibility basics', 'Git & GitHub'],
+        project: 'Personal portfolio website',
+        projectUrl: '#',
+        codeUrl: '#'
+      }
+    };
+
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const result = document.getElementById('result');
+    const title = document.getElementById('result-title');
+    const input = document.getElementById('cert-id');
+
+    function show(id) {
+      id = (id || '').trim().toUpperCase();
+      if (!id) {
+        title.textContent = 'Check a certificate';
+        result.innerHTML = '<div class="panel"><p>Enter a certificate ID to confirm it was issued by GrayBrackets. Every real certificate has its own ID and verification link.</p></div>';
+        return;
+      }
+      const c = CERTS[id];
+      if (!c) {
+        title.textContent = 'Certificate not found';
+        result.innerHTML = `<div class="status bad"><strong>Not verified.</strong>&nbsp;No GrayBrackets certificate has the ID ${esc(id)}. Check for typos, or the certificate may be fake.</div>`;
+        return;
+      }
+      const initials = c.name.split(' ').map(w => w[0]).slice(0, 2).join('');
+      const url = location.origin + location.pathname + '?id=' + encodeURIComponent(id);
+      title.textContent = 'This certificate is valid';
+      result.innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div class="status ok"><strong>Verified.</strong>&nbsp;Issued by GrayBrackets after passing the final exam and capstone project review.</div>
+          <section class="panel">
+            <div class="person"><div class="avatar" aria-hidden="true">${esc(initials)}</div>
+              <div><div class="name">${esc(c.name)}</div><div class="muted">${esc(c.course)}</div></div></div>
+            <dl class="facts" style="margin:0">
+              <div><dt>Certificate ID</dt><dd><code>${esc(id)}</code></dd></div>
+              <div><dt>Date issued</dt><dd>${esc(c.issued)}</dd></div>
+              <div><dt>Final exam score</dt><dd>${esc(c.score)} <span class="muted" style="font-weight:400">(passing: 80%)</span></dd></div>
+              <div><dt>Status</dt><dd>Active, does not expire</dd></div>
+            </dl>
+            <div><p class="muted" style="font-size:13px;margin-bottom:8px">Skills demonstrated</p>
+              <div class="chips">${c.skills.map(s => `<span>${esc(s)}</span>`).join('')}</div></div>
+            <div style="border-top:1px solid var(--line);padding-top:18px">
+              <p class="muted" style="font-size:13px">Capstone project</p>
+              <p style="font-weight:600;font-size:17px">${esc(c.project)}</p>
+              <p style="display:flex;gap:18px;flex-wrap:wrap"><a href="${esc(c.projectUrl)}">View live site</a><a href="${esc(c.codeUrl)}">View code on GitHub</a></p>
+            </div>
+            <div class="btn-row">
+              <a class="btn btn-dark btn-small" href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(c.course)}&organizationName=GrayBrackets&certId=${encodeURIComponent(id)}&certUrl=${encodeURIComponent(url)}" target="_blank" rel="noopener">Add to LinkedIn</a>
+              <a class="btn btn-outline btn-small" href="certificate.html">View certificate</a>
+              <button type="button" class="btn btn-outline btn-small" id="copy-link">Copy verification link</button>
+            </div>
+          </section>
+        </div>`;
+      document.getElementById('copy-link').addEventListener('click', e => {
+        navigator.clipboard?.writeText(url).then(() => { e.target.textContent = 'Link copied'; }).catch(() => {});
+      });
+    }
+
+    document.getElementById('verify-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const id = input.value.trim().toUpperCase();
+      history.replaceState(null, '', id ? '?id=' + encodeURIComponent(id) : location.pathname);
+      show(id);
+    });
+
+    const startId = new URLSearchParams(location.search).get('id');
+    if (startId) input.value = startId;
+    show(startId);
+    document.querySelectorAll('.year').forEach(e => e.textContent = new Date().getFullYear());
+  </script>
+</body>
+</html>

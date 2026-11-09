@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Headings and Paragraphs · HTML &amp; CSS Foundations · GrayBrackets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+</head>
+<body class="lesson-page">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="logo.svg" width="28" height="28" alt=""> GrayBrackets</a>
+      <div class="progress">
+        <span>Course progress</span>
+        <div class="progress-bar" role="progressbar" aria-label="Course progress" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"><span style="width:33%"></span></div>
+        <strong style="color:var(--ink)">33%</strong>
+      </div>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <nav class="lesson-nav" aria-label="Course lessons">
+      <div class="muted" style="font-size:13px;padding:4px 10px">Course 01</div>
+      <h2>HTML &amp; CSS Foundations</h2>
+      <ol>
+        <li><a href="#">✓&nbsp; 1. What is a website?</a></li>
+        <li><a href="#">✓&nbsp; 2. Your first HTML file</a></li>
+        <li><a href="lesson.html" aria-current="page">● &nbsp;3. Headings and paragraphs</a></li>
+        <li><a class="todo" href="#">○ &nbsp;4. Links and images</a></li>
+        <li><a class="todo" href="#">○ &nbsp;5. Lists and tables</a></li>
+        <li><a class="todo" href="#">○ &nbsp;6. Intro to CSS</a></li>
+        <li><a class="todo" href="#">🔒 Final exam + project</a></li>
+      </ol>
+    </nav>
+
+    <main id="main" class="lesson-main">
+      <article class="panel protected">
+        <p class="muted" style="font-size:14px">Lesson 3 of 6 · about 10 minutes</p>
+        <h1>Headings and paragraphs</h1>
+        <p>Headings tell visitors (and search engines) what each part of your page is about. HTML has six levels, from <code class="inline-code">&lt;h1&gt;</code> for the main title down to <code class="inline-code">&lt;h6&gt;</code> for the smallest. Paragraphs of normal text use <code class="inline-code">&lt;p&gt;</code>.</p>
+        <p>Think of a newspaper: the big headline is your <code class="inline-code">&lt;h1&gt;</code>, section titles are <code class="inline-code">&lt;h2&gt;</code>, and the stories underneath are paragraphs.</p>
+        <div class="tip"><strong>Tip:</strong> Isang <code>&lt;h1&gt;</code> lang bawat page. Use it once, for the main title, then go in order: h2, h3, and so on. Don't skip levels just to make text smaller; that's what CSS is for.</div>
+      </article>
+
+      <section class="panel" aria-labelledby="try-it">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center">
+          <h2 id="try-it">Try it yourself</h2>
+          <div class="btn-row">
+            <button type="button" class="btn btn-outline btn-small" id="reset-code">Reset</button>
+            <button type="button" class="btn btn-dark btn-small" id="run-code">Run code</button>
+          </div>
+        </div>
+        <p class="muted" style="font-size:15px">Change the store name, add an <code class="inline-code">&lt;h2&gt;</code> for "Opening hours", then tap Run code.</p>
+        <div class="editor">
+          <div>
+            <label for="code-editor">Your code</label>
+            <textarea id="code-editor" class="code" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+          </div>
+          <div>
+            <span class="label" id="preview-label">Preview</span>
+            <iframe class="preview" id="preview" title="Preview of your code" sandbox="" aria-labelledby="preview-label"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <form class="panel" id="quiz" novalidate>
+        <fieldset>
+          <legend>Quick check: Which tag is for the main page title?</legend>
+          <label class="choice"><input type="radio" name="q1" value="p"> &lt;p&gt;</label>
+          <label class="choice"><input type="radio" name="q1" value="h1"> &lt;h1&gt;</label>
+          <label class="choice"><input type="radio" name="q1" value="h6"> &lt;h6&gt;</label>
+        </fieldset>
+        <div><button type="submit" class="btn btn-outline">Check answer</button></div>
+        <p id="quiz-feedback" class="feedback" role="status" hidden></p>
+      </form>
+
+      <div class="practice-box">
+        <p><strong>Want to go deeper?</strong> Read the full free guide in this course's Practice book.</p>
+        <a class="btn btn-outline btn-small" href="https://developer.mozilla.org/en-US/docs/Learn_web_development" target="_blank" rel="noopener">Practice: MDN (opens external site)</a>
+      </div>
+
+      <div class="pager">
+        <a class="btn btn-outline" href="#">← Your first HTML file</a>
+        <a class="btn btn-accent" href="#">Links and images →</a>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>© <span class="year">2026</span> GrayBrackets. Lesson text is copyrighted. Code examples are free to copy and practice with.</div>
+      <nav aria-label="Footer"><a href="index.html">Home</a><a href="verify.html">Verify</a></nav>
+    </div>
+  </footer>
+
+  <script>
+    // --- Code editor ---
+    const starter = `<h1>Aling Nena's Store</h1>
+<h2>Today's specials</h2>
+<p>Fresh pandesal every morning.</p>`;
+    const editor = document.getElementById('code-editor');
+    const preview = document.getElementById('preview');
+    const run = () => {
+      preview.srcdoc = '<!doctype html><meta charset="utf-8"><style>body{font-family:Georgia,serif;padding:12px;margin:0;color:#12213A}</style>' + editor.value;
+    };
+    editor.value = starter;
+    run();
+    document.getElementById('run-code').addEventListener('click', run);
+    document.getElementById('reset-code').addEventListener('click', () => { editor.value = starter; run(); });
+    editor.addEventListener('keydown', e => {
+      if (e.key === 'Tab' && !e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey) {
+        // Insert two spaces; press Esc first to move focus out with Tab.
+        if (editor.dataset.escaped === '1') { editor.dataset.escaped = '0'; return; }
+        e.preventDefault();
+        const s = editor.selectionStart;
+        editor.setRangeText('  ', s, editor.selectionEnd, 'end');
+      } else if (e.key === 'Escape') {
+        editor.dataset.escaped = '1';
+      }
+    });
+
+    // --- Quiz ---
+    // Note: in the real site, exam answers must be checked on a server, not in the page.
+    document.getElementById('quiz').addEventListener('submit', e => {
+      e.preventDefault();
+      const picked = document.querySelector('input[name="q1"]:checked');
+      const fb = document.getElementById('quiz-feedback');
+      fb.hidden = false;
+      if (!picked) { fb.className = 'feedback bad'; fb.textContent = 'Pick an answer first.'; return; }
+      if (picked.value === 'h1') { fb.className = 'feedback ok'; fb.textContent = 'Tama! <h1> is the main title of the page.'; }
+      else { fb.className = 'feedback bad'; fb.textContent = 'Not quite. Try again: the main title is the biggest heading.'; }
+    });
+
+    // --- Copy deterrent for lesson text only ---
+    document.querySelectorAll('.protected').forEach(el => {
+      ['contextmenu', 'copy', 'cut', 'dragstart'].forEach(ev => el.addEventListener(ev, e => e.preventDefault()));
+    });
+
+    document.querySelectorAll('.year').forEach(e => e.textContent = new Date().getFullYear());
+  </script>
+</body>
+</html>
