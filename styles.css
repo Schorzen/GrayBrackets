@@ -238,3 +238,17 @@ button:disabled { opacity: .6; cursor: wait; }
 .gb-checking .lesson-layout { visibility: hidden; animation: gb-reveal 0s 4s forwards; }
 #questions fieldset + fieldset { margin-top: 28px; }
 #questions legend { font-size: 18px; }
+input[type="url"], textarea.input { min-height: 48px; padding: 0 14px; border: 1px solid #8A8577; border-radius: 10px; font: 16px var(--body); background: #fff; color: var(--ink); width: 100%; }
+textarea.input { padding: 12px 14px; min-height: 90px; resize: vertical; }
+input[type="url"]:focus, textarea.input:focus { outline: 3px solid var(--accent-light); outline-offset: 1px; }
+
+/* Real certificates */
+.cert-fit { max-width: 1123px; margin: 0 auto; overflow: hidden; }
+.cert { transform-origin: top left; position: relative; }
+.cert .qr canvas, .cert .qr img { display: block; }
+.cert .qr:has(canvas), .cert .qr:has(img) { border: 0; }
+.sample-stamp { position: absolute; top: 47%; left: 50%; transform: translate(-50%, -50%) rotate(-16deg); font: 700 120px var(--display); letter-spacing: .2em; color: rgba(194, 65, 12, .13); pointer-events: none; }
+@media print {
+  .cert { transform: none !important; }
+  .cert-fit { height: auto !important; overflow: visible; }
+}

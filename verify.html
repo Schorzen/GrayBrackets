@@ -38,9 +38,9 @@
       <aside class="verify-side">
         <form class="panel" id="verify-form">
           <label for="cert-id" style="font-weight:600">Enter a certificate ID</label>
-          <input id="cert-id" type="text" placeholder="e.g. GB-FE-2026-7Q4K9" autocapitalize="characters" autocomplete="off">
+          <input id="cert-id" type="text" placeholder="e.g. GB-HC-2026-ABC123" autocapitalize="characters" autocomplete="off">
           <button type="submit" class="btn btn-dark">Check certificate</button>
-          <p class="muted" style="font-size:14px">Try the sample ID: <code>GB-FE-2026-7Q4K9</code></p>
+          <p class="muted" style="font-size:14px">The ID is printed on the certificate, next to the QR code.</p>
         </form>
       </aside>
     </div>
@@ -53,65 +53,71 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
   <script>
-    // Sample record. In the real site, certificates come from a database (e.g. Supabase),
-    // so nobody can add fake ones by editing this page.
-    const CERTS = {
-      'GB-FE-2026-7Q4K9': {
-        name: 'Juan Dela Cruz',
-        course: 'Front-End Web Development',
-        issued: 'November 9, 2026',
-        score: '92%',
-        skills: ['Semantic HTML', 'Responsive CSS', 'Flexbox & Grid', 'JavaScript DOM', 'Accessibility basics', 'Git & GitHub'],
-        project: 'Personal portfolio website',
-        projectUrl: '#',
-        codeUrl: '#'
-      }
-    };
-
+  (function () {
     const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const safeUrl = u => /^https:\/\//i.test(u || '') ? esc(u) : '#';
+    const day = d => new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     const result = document.getElementById('result');
     const title = document.getElementById('result-title');
     const input = document.getElementById('cert-id');
+    let seq = 0;
 
-    function show(id) {
+    async function show(id) {
+      const mine = ++seq;
       id = (id || '').trim().toUpperCase();
       if (!id) {
         title.textContent = 'Check a certificate';
         result.innerHTML = '<div class="panel"><p>Enter a certificate ID to confirm it was issued by GrayBrackets. Every real certificate has its own ID and verification link.</p></div>';
         return;
       }
-      const c = CERTS[id];
+      title.textContent = 'Checking…';
+      result.innerHTML = '';
+      const { client } = await window.gbAuth.ready;
+      if (!client) { title.textContent = 'Check a certificate'; result.innerHTML = '<div class="panel"><p>Verification is not available right now. Please try again later.</p></div>'; return; }
+      const { data, error } = await client.rpc('verify_certificate', { p_id: id });
+      if (mine !== seq) return;
+      if (error) {
+        title.textContent = 'Could not check';
+        result.innerHTML = '<div class="status bad">Something went wrong. Check your connection and try again.</div>';
+        return;
+      }
+      const c = data && data[0];
       if (!c) {
         title.textContent = 'Certificate not found';
         result.innerHTML = `<div class="status bad"><strong>Not verified.</strong>&nbsp;No GrayBrackets certificate has the ID ${esc(id)}. Check for typos, or the certificate may be fake.</div>`;
         return;
       }
-      const initials = c.name.split(' ').map(w => w[0]).slice(0, 2).join('');
-      const url = location.origin + location.pathname + '?id=' + encodeURIComponent(id);
+      const initials = c.full_name.split(/\s+/).filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+      const url = location.origin + location.pathname + '?id=' + encodeURIComponent(c.id);
+      const pct = Math.round(c.score / c.total * 100);
+      const skills = Array.isArray(c.skills) ? c.skills : [];
+      const issued = new Date(c.issued_at);
       title.textContent = 'This certificate is valid';
       result.innerHTML = `
         <div style="display:flex;flex-direction:column;gap:20px">
-          <div class="status ok"><strong>Verified.</strong>&nbsp;Issued by GrayBrackets after passing the final exam and capstone project review.</div>
+          <div class="status ok"><strong>Verified.</strong>&nbsp;Issued by GrayBrackets after passing the final exam and a reviewed capstone project.</div>
           <section class="panel">
             <div class="person"><div class="avatar" aria-hidden="true">${esc(initials)}</div>
-              <div><div class="name">${esc(c.name)}</div><div class="muted">${esc(c.course)}</div></div></div>
+              <div><div class="name">${esc(c.full_name)}</div><div class="muted">${esc(c.course_name)}</div></div></div>
             <dl class="facts" style="margin:0">
-              <div><dt>Certificate ID</dt><dd><code>${esc(id)}</code></dd></div>
-              <div><dt>Date issued</dt><dd>${esc(c.issued)}</dd></div>
-              <div><dt>Final exam score</dt><dd>${esc(c.score)} <span class="muted" style="font-weight:400">(passing: 80%)</span></dd></div>
+              <div><dt>Certificate ID</dt><dd><code>${esc(c.id)}</code></dd></div>
+              <div><dt>Date issued</dt><dd>${esc(day(c.issued_at))}</dd></div>
+              <div><dt>Final exam score</dt><dd>${pct}% <span class="muted" style="font-weight:400">(${c.score} of ${c.total}; passing: 80%)</span></dd></div>
               <div><dt>Status</dt><dd>Active, does not expire</dd></div>
             </dl>
-            <div><p class="muted" style="font-size:13px;margin-bottom:8px">Skills demonstrated</p>
-              <div class="chips">${c.skills.map(s => `<span>${esc(s)}</span>`).join('')}</div></div>
+            ${skills.length ? `<div><p class="muted" style="font-size:13px;margin-bottom:8px">Skills covered</p>
+              <div class="chips">${skills.map(s => `<span>${esc(s)}</span>`).join('')}</div></div>` : ''}
             <div style="border-top:1px solid var(--line);padding-top:18px">
               <p class="muted" style="font-size:13px">Capstone project</p>
-              <p style="font-weight:600;font-size:17px">${esc(c.project)}</p>
-              <p style="display:flex;gap:18px;flex-wrap:wrap"><a href="${esc(c.projectUrl)}">View live site</a><a href="${esc(c.codeUrl)}">View code on GitHub</a></p>
+              <p style="display:flex;gap:18px;flex-wrap:wrap"><a href="${safeUrl(c.live_url)}" target="_blank" rel="noopener noreferrer">View live site</a><a href="${safeUrl(c.code_url)}" target="_blank" rel="noopener noreferrer">View code on GitHub</a></p>
             </div>
             <div class="btn-row">
-              <a class="btn btn-dark btn-small" href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(c.course)}&organizationName=GrayBrackets&certId=${encodeURIComponent(id)}&certUrl=${encodeURIComponent(url)}" target="_blank" rel="noopener">Add to LinkedIn</a>
-              <a class="btn btn-outline btn-small" href="certificate.html">View certificate</a>
+              <a class="btn btn-dark btn-small" href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(c.course_name)}&organizationName=GrayBrackets&issueYear=${issued.getFullYear()}&issueMonth=${issued.getMonth() + 1}&certId=${encodeURIComponent(c.id)}&certUrl=${encodeURIComponent(url)}" target="_blank" rel="noopener">Add to LinkedIn</a>
+              <a class="btn btn-outline btn-small" href="certificate.html?id=${encodeURIComponent(c.id)}">View certificate</a>
               <button type="button" class="btn btn-outline btn-small" id="copy-link">Copy verification link</button>
             </div>
           </section>
@@ -132,9 +138,7 @@
     if (startId) input.value = startId;
     show(startId);
     document.querySelectorAll('.year').forEach(e => e.textContent = new Date().getFullYear());
+  })();
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
-  <script src="auth.js"></script>
 </body>
 </html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Review Projects · GrayBrackets Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <script>document.documentElement.classList.add('gb-checking')</script>
+</head>
+<body class="lesson-page" data-requires-login="true">
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="logo.svg" width="28" height="28" alt=""> GrayBrackets</a>
+      <a data-auth-link href="account.html" style="font-weight:500;font-size:15px;color:var(--ink);padding:12px 4px">My account</a>
+    </div>
+  </header>
+
+  <div class="lesson-layout" style="max-width:860px">
+    <main id="main" class="lesson-main">
+      <div class="panel">
+        <p class="muted" style="font-size:14px">Admin</p>
+        <h1>Projects to review</h1>
+        <p id="status-text">Loading…</p>
+        <p id="message" class="feedback" role="status" hidden></p>
+      </div>
+      <div id="list" style="display:flex;flex-direction:column;gap:16px"></div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+  (async function () {
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const safeUrl = u => /^https:\/\//i.test(u) ? esc(u) : '#';
+    const COURSES = { 'html-css': 'HTML & CSS Foundations' };
+    const msg = (text, ok) => { const m = $('message'); m.hidden = !text; m.textContent = text || ''; m.className = 'feedback ' + (ok ? 'ok' : 'bad'); };
+
+    const { client, user } = await window.gbAuth.ready;
+    if (!client || !user) return;
+
+    const { data: isAdmin } = await client.rpc('is_admin');
+    if (!isAdmin) { $('status-text').textContent = 'This page is only for GrayBrackets reviewers.'; return; }
+
+    async function load() {
+      const { data, error } = await client.rpc('admin_pending_projects');
+      if (error) { $('status-text').textContent = 'Could not load submissions. Refresh to try again.'; return; }
+      $('status-text').textContent = data.length
+        ? `${data.length} project${data.length === 1 ? '' : 's'} waiting. Open both links, check the project brief, then approve or send it back with a note.`
+        : 'Nothing to review right now.';
+      $('list').innerHTML = data.map(s => `
+        <article class="panel" data-id="${s.id}">
+          <div>
+            <h2 style="font-size:22px">${esc(s.full_name)}</h2>
+            <p class="muted" style="font-size:15px">${esc(s.email)} · ${esc(COURSES[s.course] || s.course)} · ${esc(new Date(s.created_at).toLocaleString())}</p>
+          </div>
+          <p style="display:flex;flex-direction:column;gap:6px;word-break:break-all">
+            <a href="${safeUrl(s.live_url)}" target="_blank" rel="noopener noreferrer">Live site: ${esc(s.live_url)}</a>
+            <a href="${safeUrl(s.code_url)}" target="_blank" rel="noopener noreferrer">Code: ${esc(s.code_url)}</a>
+          </p>
+          <div class="field">
+            <label for="fb-${s.id}">Note to the student (required when sending back)</label>
+            <textarea id="fb-${s.id}" class="input" maxlength="1000"></textarea>
+          </div>
+          <p class="muted" style="font-size:14px">Certificate name: <strong>${esc(s.full_name)}</strong>. Check the spelling; it can't be changed after approval.</p>
+          <div class="btn-row">
+            <button type="button" class="btn btn-dark" data-action="approve">Approve and issue certificate</button>
+            <button type="button" class="btn btn-outline" data-action="reject">Send back</button>
+          </div>
+        </article>`).join('');
+    }
+
+    $('list').addEventListener('click', async e => {
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const card = btn.closest('[data-id]');
+      const id = Number(card.dataset.id);
+      const note = card.querySelector('textarea').value.trim();
+      const approve = btn.dataset.action === 'approve';
+      if (!approve && !note) { msg('Write a short note so the student knows what to fix.', false); card.querySelector('textarea').focus(); return; }
+      if (approve && !confirm('Approve this project and issue the certificate?')) return;
+      card.querySelectorAll('button').forEach(b => { b.disabled = true; });
+      const { data, error } = await client.rpc('review_project', { p_submission_id: id, p_approve: approve, p_feedback: note || null });
+      if (error) { msg('Could not save: ' + error.message, false); card.querySelectorAll('button').forEach(b => { b.disabled = false; }); return; }
+      msg(approve ? `Approved. Certificate ${data} issued.` : 'Sent back with your note.', true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      load();
+    });
+
+    load();
+  })();
+  </script>
+</body>
+</html>

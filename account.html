@@ -166,6 +166,14 @@
         : `${done.length} of 6 lessons complete.`;
       const nextLesson = [1, 2, 3, 4, 5, 6].find(n => !done.includes(n));
       $('continue').href = nextLesson ? `lesson-${nextLesson}.html` : 'final.html';
+      try {
+        const { data: certs } = await client.from('certificates').select('id').eq('course', 'html-css').limit(1);
+        if (certs && certs[0]) {
+          $('acct-count').textContent = 'Course complete. You earned your certificate!';
+          $('continue').textContent = 'View certificate';
+          $('continue').href = 'certificate.html?id=' + encodeURIComponent(certs[0].id);
+        }
+      } catch (e) {}
     }
 
     client.auth.onAuthStateChange((event) => {

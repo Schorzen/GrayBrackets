@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sample Certificate · GrayBrackets</title>
+  <title>Certificate · GrayBrackets</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
@@ -13,14 +13,15 @@
 <body class="cert-page">
   <div class="cert-tools no-print">
     <a class="brand" href="index.html"><img src="logo.svg" width="28" height="28" alt=""> GrayBrackets</a>
-    <div class="btn-row">
-      <a class="btn btn-outline btn-small" href="verify.html?id=GB-FE-2026-7Q4K9">Verify this certificate</a>
+    <div class="btn-row" id="tools" hidden>
+      <a class="btn btn-outline btn-small" id="verify-link" href="verify.html">Verify this certificate</a>
       <button type="button" class="btn btn-dark btn-small" onclick="window.print()">Download as PDF</button>
     </div>
   </div>
+  <p id="notice" class="no-print" style="max-width:1123px;margin:0 auto 16px" hidden></p>
 
-  <div class="cert-scroll">
-    <main class="cert" aria-label="Certificate of Completion">
+  <div id="cert-fit" class="cert-fit" hidden>
+    <main class="cert" id="cert" aria-label="Certificate of Completion">
       <div class="frame"><div class="inner">
         <div class="top">
           <div class="brand" style="font-size:24px"><img src="logo.svg" width="40" height="40" alt=""> GrayBrackets</div>
@@ -30,27 +31,26 @@
         <div class="center">
           <div class="kicker">Certificate of Completion</div>
           <div class="muted">This certifies that</div>
-          <div class="learner">Juan Dela Cruz</div>
+          <div class="learner" id="c-name"></div>
           <div class="rule"></div>
           <div class="muted">has passed the final exam and completed the capstone project for</div>
-          <div class="course-name">Front-End Web Development</div>
+          <div class="course-name" id="c-course"></div>
           <div class="stats">
-            <div><span class="muted">Final exam score</span> <strong>92%</strong></div>
-            <div><span class="muted">Capstone</span> <strong>Portfolio website</strong></div>
-            <div><span class="muted">Coursework</span> <strong>HTML · CSS · JavaScript</strong></div>
+            <div><span class="muted">Final exam score</span> <strong id="c-score"></strong></div>
+            <div><span class="muted">Capstone</span> <strong>Reviewed and approved</strong></div>
           </div>
         </div>
 
         <div class="bottom">
           <div style="display:flex;gap:56px">
             <div class="sig">
-              <div style="font-family:var(--serif);font-style:italic;font-size:24px;height:30px">[Signature]</div>
+              <div style="font-family:var(--display);font-weight:700;font-size:20px;height:30px;display:flex;align-items:flex-end">GrayBrackets</div>
               <div class="line"></div>
-              <strong style="font-size:13px">[Founder Name]</strong>
-              <span class="muted" style="font-size:12px">Founder, GrayBrackets</span>
+              <strong style="font-size:13px">Project Review Team</strong>
+              <span class="muted" style="font-size:12px">Issued by</span>
             </div>
-            <div class="sig" style="width:180px">
-              <div style="font-size:18px;font-weight:500;height:30px;display:flex;align-items:flex-end">November 9, 2026</div>
+            <div class="sig" style="width:190px">
+              <div style="font-size:18px;font-weight:500;height:30px;display:flex;align-items:flex-end" id="c-date"></div>
               <div class="line"></div>
               <strong style="font-size:13px">Date issued</strong>
               <span class="muted" style="font-size:12px">Does not expire</span>
@@ -59,14 +59,72 @@
           <div style="display:flex;align-items:center;gap:16px">
             <div style="text-align:right">
               <div class="muted" style="font-size:11px;letter-spacing:.12em;text-transform:uppercase">Certificate ID</div>
-              <div style="font-family:var(--display);font-weight:700;font-size:17px">GB-FE-2026-7Q4K9</div>
-              <div class="muted" style="font-size:12px">Verify on the GrayBrackets verify page</div>
+              <div style="font-family:var(--display);font-weight:700;font-size:17px" id="c-id"></div>
+              <div class="muted" style="font-size:12px">Scan or visit the verify page to check</div>
             </div>
-            <div class="qr">QR code</div>
+            <div class="qr" id="c-qr" aria-label="QR code linking to the verification page" role="img"></div>
           </div>
         </div>
       </div></div>
+      <div class="sample-stamp" id="sample-stamp" hidden aria-hidden="true">SAMPLE</div>
     </main>
   </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+  (async function () {
+    const $ = id => document.getElementById(id);
+    const day = d => new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const base = location.href.replace(/[^/]*$/, '');
+    const id = (new URLSearchParams(location.search).get('id') || '').trim().toUpperCase();
+
+    function notice(html) { const n = $('notice'); n.hidden = false; n.innerHTML = html; }
+
+    function fill(c, sample) {
+      $('c-name').textContent = c.full_name;
+      $('c-course').textContent = c.course_name;
+      $('c-score').textContent = Math.round(c.score / c.total * 100) + '%';
+      $('c-date').textContent = day(c.issued_at);
+      $('c-id').textContent = c.id;
+      $('sample-stamp').hidden = !sample;
+      const verifyUrl = base + 'verify.html?id=' + encodeURIComponent(c.id);
+      $('verify-link').href = verifyUrl;
+      document.title = (sample ? 'Sample certificate' : c.full_name + ' · ' + c.course_name) + ' · GrayBrackets';
+      if (window.QRCode && !sample) {
+        new QRCode($('c-qr'), { text: verifyUrl, width: 84, height: 84, correctLevel: QRCode.CorrectLevel.M });
+      } else {
+        $('c-qr').textContent = sample ? 'QR code' : '';
+      }
+      $('tools').hidden = false;
+      $('cert-fit').hidden = false;
+      fit();
+    }
+
+    // Scale the certificate down to fit small screens (prints at full size).
+    function fit() {
+      const wrap = $('cert-fit'), cert = $('cert');
+      const scale = Math.min(1, (document.documentElement.clientWidth - 24) / 1123);
+      cert.style.transform = scale < 1 ? `scale(${scale})` : '';
+      wrap.style.height = scale < 1 ? (794 * scale) + 'px' : '';
+    }
+    window.addEventListener('resize', fit);
+
+    if (!id) {
+      notice('This is a <strong>sample</strong>. Real certificates are issued after a student passes the final exam and their project is approved.');
+      fill({ id: 'GB-HC-2026-SAMPLE', full_name: 'Juan Dela Cruz', course_name: 'HTML & CSS Foundations', score: 18, total: 20, issued_at: new Date().toISOString() }, true);
+      return;
+    }
+
+    const { client } = await window.gbAuth.ready;
+    if (!client) { notice('Certificates can\'t be loaded right now. Please try again later.'); return; }
+    const { data, error } = await client.rpc('verify_certificate', { p_id: id });
+    if (error) { notice('Could not load this certificate. Check your connection and refresh.'); return; }
+    if (!data || !data.length) { notice('No GrayBrackets certificate has this ID. <a href="verify.html">Check another ID</a>.'); return; }
+    fill(data[0], false);
+  })();
+  </script>
 </body>
 </html>

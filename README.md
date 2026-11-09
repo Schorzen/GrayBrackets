@@ -6,7 +6,7 @@ Free web development courses in English and Taglish, with free verifiable certif
 
 - `index.html` — homepage with the learning path and a Practice button for each course
 - `lesson.html` — sample lesson with a live code editor and a quick quiz
-- `verify.html` — certificate verification (`verify.html?id=GB-FE-2026-7Q4K9`)
+- `verify.html` — certificate verification (`verify.html?id=<certificate ID>`)
 - `certificate.html` — printable sample certificate (Download as PDF uses the browser's print)
 
 ## Practice books (external, linked only)
@@ -44,3 +44,10 @@ These are linked, not copied. They belong to their authors.
 
 - `exam.sql` creates the exam tables, the 20 questions, and two server functions: `get_exam` (questions without answers) and `submit_exam` (grades on the server, 80% to pass, 15-minute wait after a failed try). Run it once in Supabase → SQL Editor. Re-running it replaces the questions.
 - `exam.html` is the exam page. Students must finish all 6 lessons first.
+
+## Projects and certificates
+
+- `certificates.sql` adds project submissions, admin review, certificate issuing and public verification. Run it once in Supabase, then add yourself to `admins` with the line at the bottom of the file.
+- `final.html` lets students who passed the exam submit their live site and GitHub links.
+- `admin.html` is the private review page (admins only). Approving issues a certificate with a unique ID like `GB-HC-2026-7K2M9Q`.
+- `certificate.html?id=…` shows a real certificate with a QR code; with no ID it shows a sample.
